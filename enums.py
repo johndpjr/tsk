@@ -1,10 +1,10 @@
-from enum import Enum, auto
+from enum import Enum
 
 
 class TaskPriority(Enum):
-    Low = 0
-    Medium = 1
-    High = 2
+    Low = 1
+    Medium = 2
+    High = 3
 
 class Selector(Enum):
     Task = 'task'

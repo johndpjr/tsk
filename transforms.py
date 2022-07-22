@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from enums import Selector
+from enums import TaskPriority
 
-
-def mkselector(selector: str) -> Selector:
-    return Selector(selector)
 
 def mkdate(date: str) -> datetime:
-    pass
+    return datetime.strptime(date, '%m/%d/%y')
+
+def mkpriority(priority: str) -> TaskPriority:
+    return TaskPriority(int(priority))
