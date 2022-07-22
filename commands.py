@@ -5,12 +5,11 @@ from enums import Selector
 from models.task import Task
 from models.tasklist import Tasklist
 from settings import Settings
+import logger
 
 
 def add(args: Namespace, conf: Settings, db: TskDatabase):
     """Add task(s) or tasklist(s)."""
-
-    print(args)
 
     if args.selector == Selector.Task:
         task = Task(
@@ -20,13 +19,15 @@ def add(args: Namespace, conf: Settings, db: TskDatabase):
             date_due=args.task_date_due,
             notes=args.task_notes
         )
-        print(task)
         db.add_task(task)
+        print('Added task')
+        logger.print_task(task)
     
     elif args.selector == Selector.Tasklist:
         tasklist = Tasklist(args.title)
-        print(tasklist)
         db.add_tasklist(tasklist)
+        print('Added tasklist')
+        logger.print_tasklist(tasklist)
 
 def complete(args: Namespace, conf: Settings, db: TskDatabase):
     """Complete task(s)."""
