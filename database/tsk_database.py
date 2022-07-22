@@ -60,6 +60,7 @@ class TskDatabase:
             * id           (str): task id
             * tasklist_id  (str): parent tasklist id
             * title        (str): task name
+            * is_completed (bool): indicates if the task is finished
             * priority     (int): 1-3 importance rank (1 lowest / 3 highest)
             * date_created (str): task creation date timestamp
             * date_due     (str): date the task should be completed by
@@ -71,6 +72,7 @@ class TskDatabase:
                 id TEXT,
                 tasklist_id TEXT,
                 title TEXT,
+                is_completed INTEGER,
                 priority INTEGER,
                 date_created TEXT,
                 date_due TEXT,
@@ -97,14 +99,15 @@ class TskDatabase:
             self.c.execute("""INSERT INTO Tasks
                 (
                     id, tasklist_id,
-                    title, priority,
-                    date_created, date_due,
-                    notes
+                    title, is_completed,
+                    priority, date_created,
+                    date_due, notes
                 )
-                VALUES (?,?,?,?,?,?,?)""",
+                VALUES (?,?,?,?,?,?,?,?)""",
                 (
                     task.id, task.tasklist_id,
-                    task.title, task.priority.value,
+                    task.title, task.is_completed,
+                    task.priority.value,
                     utils.tstamp_to_tstr(task.date_created),
                     utils.tstamp_to_tstr(task.date_due),
                     task.notes

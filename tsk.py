@@ -1,7 +1,9 @@
 import argparse
+from datetime import datetime
 
 from enums import Selector, TaskPriority
 import commands
+import utils
 import transforms
 from database.tsk_database import TskDatabase
 
@@ -26,13 +28,16 @@ command_add.add_argument('--tasklist-id', type=str,
 command_add.add_argument('-t', '--title', required=True, type=str,
                          help='name of the task')
 command_add.add_argument('-p', '--priority', type=transforms.mkpriority,
+                         default=TaskPriority.Medium,
                          choices=list(TaskPriority),
                          dest='task_priority',
                          help='priority of the task')
 command_add.add_argument('-d', '--duedate', type=transforms.mkdate,
                          dest='task_date_due',
+                         default=utils.tstamp_to_datestr(datetime.now().date()),
                          help='date the task should be completed by')
 command_add.add_argument('-n', '--notes', type=str,
+                         default='',
                          dest='task_notes',
                          help='additional task information')
 command_add.set_defaults(func=commands.add)
