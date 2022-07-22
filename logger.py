@@ -1,7 +1,7 @@
 from models.task import Task
 from models.tasklist import Tasklist
 from enums import TaskPriority
-from utils import tstamp_to_datestr
+from utils import tstamp_to_friendly_datestr
 
 
 def print_task(task: Task):
@@ -12,7 +12,7 @@ def print_task(task: Task):
     oput_notes = '{...}' if task.notes else ''
     
     print(f'[{oput_is_completed}] {task.title} {oput_priority} {oput_notes}\n'+
-          f'      {tstamp_to_datestr(task.date_due)}'
+          f'      {tstamp_to_friendly_datestr(task.date_due)}'
     )
 
 def print_tasklist(tasklist: Tasklist):

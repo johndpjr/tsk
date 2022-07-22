@@ -12,7 +12,7 @@ class Task:
     tasklist_id: str
     title: str
     is_completed: bool     = False
-    priority: TaskPriority = TaskPriority.Low
+    priority: TaskPriority = TaskPriority.Medium
     date_created: datetime = datetime.now()
     date_due: datetime     = datetime.now().date()
     notes: str             = ''

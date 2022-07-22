@@ -1,10 +1,12 @@
 import sqlite3
+from typing import List
 
 from settings import Settings
 import utils
 
 from models.task import Task
 from models.tasklist import Tasklist
+from enums import TaskPriority
 
 
 class TskDatabase:
@@ -80,6 +82,27 @@ class TskDatabase:
             )
         """)
     
+    def _transform_tasklist(self, tasklist_data) -> Tasklist:
+        tasklist = Tasklist(
+            title=tasklist_data[1],
+            is_default=tasklist_data[2],
+            id=tasklist_data[0]
+        )
+        return tasklist
+
+    def _transform_task(self, task_data) -> Task:
+        task = Task(
+            tasklist_id=task_data[1],
+            title=task_data[2],
+            is_completed=task_data[3],
+            priority=TaskPriority(task_data[4]),
+            date_created=utils.tstr_to_tstamp(task_data[5]),
+            date_due=utils.tstr_to_tstamp(task_data[6]),
+            notes=task_data[7],
+            id=task_data[0],
+        )
+        return task
+    
     def add_tasklist(self, tasklist: Tasklist):
         """Adds a tasklist to the database."""
         with self.conn:
@@ -113,3 +136,42 @@ class TskDatabase:
                     task.notes
                 )
             )
+
+    def get_tasklists(self, query_ids: List[str]=[]) -> List[Tasklist]:
+        """Returns a list of all tasklists."""
+
+        tasklists = []
+        if query_ids:
+            for query_id in query_ids:
+                self.c.execute("""
+                    SELECT * FROM Tasklists WHERE id=?
+                """, (query_id,))
+                qres = self.c.fetchone()
+                if qres is None:
+                    print('No tasks found')
+                else:
+                    tasklists.append(self._transform_tasklist(qres))
+        else:
+            self.c.execute("""
+                SELECT * FROM Tasklists
+            """)
+            res = self.c.fetchall()
+            if res:
+                [tasklists.append(self._transform_tasklist(tasklist_data)) for tasklist_data in res]
+        
+        return tasklists
+
+    def get_tasks(self, tasklist_id: str) -> List[Task]:
+        """Returns a list of Tasks that are in the Tasklist.
+        If no Tasks match the Tasklist or if the id doesn't exist,
+        an empty list is returned.
+        """
+
+        self.c.execute("""
+            SELECT * FROM Tasks WHERE tasklist_id=?
+        """, (tasklist_id,))
+        res = self.c.fetchall()
+        if res:
+            tasks = [self._transform_task(task_data) for task_data in res]
+            return tasks
+        return []

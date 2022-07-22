@@ -43,4 +43,18 @@ def update(args: Namespace, conf: Settings, db: TskDatabase):
 
 def list(args: Namespace, conf: Settings, db: TskDatabase):
     """List tasks(s) or tasklist(s)."""
-    pass
+    
+    if args.all:
+        tasklists = db.get_tasklists()
+        for tasklist in tasklists:
+            logger.print_tasklist(tasklist)
+            tasks = db.get_tasks(tasklist.id)
+            for task in tasks:
+                logger.print_task(task)
+    if args.id:
+        tasklists = db.get_tasklists(args.id)
+        for tasklist in tasklists:
+            logger.print_tasklist(tasklist)
+            tasks = db.get_tasks(tasklist.id)
+            for task in tasks:
+                logger.print_task(task)

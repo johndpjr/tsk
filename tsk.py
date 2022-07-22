@@ -34,7 +34,7 @@ command_add.add_argument('-p', '--priority', type=transforms.mkpriority,
                          help='priority of the task')
 command_add.add_argument('-d', '--duedate', type=transforms.mkdate,
                          dest='task_date_due',
-                         default=utils.tstamp_to_datestr(datetime.now().date()),
+                         default=utils.tstamp_to_american_datestr(datetime.now().date()),
                          help='date the task should be completed by')
 command_add.add_argument('-n', '--notes', type=str,
                          default='',
@@ -54,8 +54,13 @@ command_remove.set_defaults(func=commands.remove)
 command_update = subparser.add_parser('update', aliases=['up'])
 command_update.set_defaults(func=commands.update)
 
-# List: list tasks/tasklists data
+# List: list tasklist(s) data
 command_list = subparser.add_parser('list', aliases=['ls'])
+tasklist_group = command_list.add_mutually_exclusive_group()
+tasklist_group.add_argument('-a', '--all', action='store_true')
+tasklist_group.add_argument('--id', type=str,
+                            nargs='+',
+                            help='id(s) of the tasklist(s)')
 command_list.set_defaults(func=commands.list)
 
 

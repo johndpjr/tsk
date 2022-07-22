@@ -6,8 +6,14 @@ def get_id() -> str:
     """Returns a random alphanumeric id."""
     return ''.join(random.choices(string.ascii_letters + string.digits, k=5))
 
-def tstamp_to_datestr(tstamp: datetime) -> str:
+def tstamp_to_american_datestr(tstamp: datetime) -> str:
     return tstamp.strftime('%m/%d/%y')
+
+def tstamp_to_friendly_datestr(tstamp: datetime) -> str:
+    return tstamp.strftime('%a %b %d')
+
+def tstamp_to_datestr(tstamp: datetime) -> str:
+    return tstamp.strftime('%Y-%m-%d')
 
 def tstamp_to_timestr(tstamp: datetime) -> str:
     return tstamp.strftime('%H:%M:%S')
