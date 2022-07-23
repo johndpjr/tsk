@@ -179,7 +179,8 @@ class TskDatabase:
     def complete_tasks(self, ids: List[str]):
         """Sets is_completed for all tasks in ids."""
         
+        ids = [[id] for id in ids]
         with self.conn:
             self.c.executemany("""
                 UPDATE Tasks SET is_completed=TRUE WHERE id=(?)
-            """, (ids,))
+            """, ids)

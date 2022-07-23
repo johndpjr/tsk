@@ -44,13 +44,16 @@ command_add.set_defaults(func=commands.add)
 
 # Complete: marks a task as done
 command_complete = subparser.add_parser('complete', aliases=['cm'])
-command_complete.add_argument('id', type=str,
+command_complete.add_argument('ids', type=str,
                               nargs='+',
-                              help='id of the task(s)')
+                              help='id(s) of the task(s)')
 command_complete.set_defaults(func=commands.complete)
 
 # Remove: deletes task(s)/tasklist(s)
 command_remove = subparser.add_parser('remove', aliases=['rm'])
+command_remove.add_argument('--id', type=str,
+                            nargs='+',
+                            help='id(s) of the task(s)/tasklist(s)')
 command_remove.set_defaults(func=commands.remove)
 
 # Update: update task/tasklist data

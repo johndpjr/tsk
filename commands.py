@@ -32,11 +32,10 @@ def add(args: Namespace, conf: Settings, db: TskDatabase):
 def complete(args: Namespace, conf: Settings, db: TskDatabase):
     """Complete task(s)."""
 
-    db.complete_tasks(args.id)
+    db.complete_tasks(args.ids)
 
 def remove(args: Namespace, conf: Settings, db: TskDatabase):
     """Remove task(s) or tasklist(s)."""
-    pass
 
 def update(args: Namespace, conf: Settings, db: TskDatabase):
     """Update task(s) or tasklist(s)."""
