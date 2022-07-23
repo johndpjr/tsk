@@ -44,8 +44,7 @@ command_add.set_defaults(func=commands.add)
 
 # Complete: marks a task as done
 command_complete = subparser.add_parser('complete', aliases=['cm'])
-command_complete.add_argument('--id', type=str,
-                              required=True,
+command_complete.add_argument('id', type=str,
                               nargs='+',
                               help='id of the task(s)')
 command_complete.set_defaults(func=commands.complete)
