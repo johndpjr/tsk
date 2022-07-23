@@ -175,3 +175,11 @@ class TskDatabase:
             tasks = [self._transform_task(task_data) for task_data in res]
             return tasks
         return []
+
+    def complete_tasks(self, ids: List[str]):
+        """Sets is_completed for all tasks in ids."""
+        
+        with self.conn:
+            self.c.executemany("""
+                UPDATE Tasks SET is_completed=TRUE WHERE id=(?)
+            """, (ids,))

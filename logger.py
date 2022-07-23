@@ -11,7 +11,7 @@ def print_task(task: Task):
     elif task.priority == TaskPriority.Low: oput_priority = '.'
     oput_notes = '{...}' if task.notes else ''
     
-    print(f'[{oput_is_completed}] {task.title} {oput_priority} {oput_notes}\n'+
+    print(f'[{oput_is_completed}] {task.title} {oput_priority} {task.id} {oput_notes}\n'+
           f'      {tstamp_to_friendly_datestr(task.date_due)}'
     )
 
