@@ -175,6 +175,24 @@ class TskDatabase:
             tasks = [self._transform_task(task_data) for task_data in res]
             return tasks
         return []
+    
+    def get_tasks_by_ids(self, task_ids: List[str]) -> List[Task]:
+        """Returns a list of Tasks given the ids. If the ids are not found,
+        then an empty list is returned.
+        """
+
+        tasks = []
+        for task_id in task_ids:
+            self.c.execute("""
+                SELECT * FROM Tasks WHERE id=?
+            """, (task_id,))
+            res = self.c.fetchone()
+            if res is None:
+                print(f'Task id {task_id} not found')
+            else:
+                tasks.append(self._transform_task(res))
+
+        return tasks
 
     def set_tasks_completion(self, ids: List[str], is_set_complete: bool):
         """Sets is_completed to is_set_complete for all tasks in ids."""

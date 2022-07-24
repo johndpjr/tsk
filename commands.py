@@ -20,19 +20,20 @@ def add(args: Namespace, conf: Settings, db: TskDatabase):
             notes=args.task_notes
         )
         db.add_task(task)
-        print('Added task')
+        print(f"Added task '{task.title}'")
         logger.print_task(task)
     
     elif args.selector == Selector.Tasklist:
         tasklist = Tasklist(args.title)
         db.add_tasklist(tasklist)
-        print('Added tasklist')
+        print(f"Added tasklist '{tasklist.title}'")
         logger.print_tasklist(tasklist)
 
 def complete(args: Namespace, conf: Settings, db: TskDatabase):
     """Complete task(s)."""
 
     db.set_tasks_completion(args.ids, args.is_set_complete)
+    logger.feedback_complete(db.get_tasks_by_ids(args.ids), args.is_set_complete)
 
 def remove(args: Namespace, conf: Settings, db: TskDatabase):
     """Remove task(s) or tasklist(s)."""
