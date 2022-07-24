@@ -51,7 +51,9 @@ command_complete.set_defaults(func=commands.complete)
 
 # Remove: deletes task(s)/tasklist(s)
 command_remove = subparser.add_parser('remove', aliases=['rm'])
-command_remove.add_argument('--id', type=str,
+command_remove.add_argument('selector', type=Selector,
+                            choices=[s for s in Selector])
+command_remove.add_argument('ids', type=str,
                             nargs='+',
                             help='id(s) of the task(s)/tasklist(s)')
 command_remove.set_defaults(func=commands.remove)

@@ -184,3 +184,26 @@ class TskDatabase:
             self.c.executemany("""
                 UPDATE Tasks SET is_completed=TRUE WHERE id=(?)
             """, ids)
+
+    def remove_tasklists(self, tasklist_ids: List[str]):
+        """Removes all tasklists with matching ids. Also deletes all
+        tasks within the matching tasklists.
+        """
+        tasklist_ids = [(id,) for id in tasklist_ids]
+        with self.conn:
+            # Delete tasklists
+            self.c.executemany("""
+                DELETE FROM Tasklists WHERE id=?
+            """, tasklist_ids)
+            # Delete tasks associated with tasklists
+            self.c.executemany("""
+                DELETE FROM Tasks WHERE tasklist_id=?
+            """, tasklist_ids)
+
+    def remove_tasks(self, ids: List[str]):
+        """Removes all tasks with matching ids."""
+        ids = [(id,) for id in ids]
+        with self.conn:
+            self.c.executemany("""
+                DELETE FROM Tasks WHERE id=?
+            """, ids)

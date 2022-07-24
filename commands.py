@@ -37,6 +37,11 @@ def complete(args: Namespace, conf: Settings, db: TskDatabase):
 def remove(args: Namespace, conf: Settings, db: TskDatabase):
     """Remove task(s) or tasklist(s)."""
 
+    if args.selector == Selector.Task:
+        db.remove_tasks(args.ids)
+    elif args.selector == Selector.Tasklist:
+        db.remove_tasklists(args.ids)
+
 def update(args: Namespace, conf: Settings, db: TskDatabase):
     """Update task(s) or tasklist(s)."""
     pass
