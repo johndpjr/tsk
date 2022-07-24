@@ -1,5 +1,6 @@
 import argparse
 from datetime import datetime
+from email.quoprimime import header_check
 
 from enums import Selector, TaskPriority
 import commands
@@ -47,6 +48,9 @@ command_complete = subparser.add_parser('complete', aliases=['cm'])
 command_complete.add_argument('ids', type=str,
                               nargs='+',
                               help='id(s) of the task(s)')
+command_complete.add_argument('-u', '--uncomplete', action='store_false',
+                              dest='is_set_complete',
+                              help='undo completion status')
 command_complete.set_defaults(func=commands.complete)
 
 # Remove: deletes task(s)/tasklist(s)

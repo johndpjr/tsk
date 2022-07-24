@@ -176,14 +176,14 @@ class TskDatabase:
             return tasks
         return []
 
-    def complete_tasks(self, ids: List[str]):
-        """Sets is_completed for all tasks in ids."""
+    def set_tasks_completion(self, ids: List[str], is_set_complete: bool):
+        """Sets is_completed to is_set_complete for all tasks in ids."""
         
-        ids = [[id] for id in ids]
+        params = [(is_set_complete, id) for id in ids]
         with self.conn:
             self.c.executemany("""
-                UPDATE Tasks SET is_completed=TRUE WHERE id=(?)
-            """, ids)
+                UPDATE Tasks SET is_completed=? WHERE id=?
+            """, params)
 
     def remove_tasklists(self, tasklist_ids: List[str]):
         """Removes all tasklists with matching ids. Also deletes all
