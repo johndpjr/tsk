@@ -22,12 +22,12 @@ subparser = parser.add_subparsers(dest='command')
 command_add = subparser.add_parser('add', aliases=['a'])
 command_add.add_argument('selector', type=Selector,
                          choices=[s for s in Selector])
+command_add.add_argument('title', type=str,
+                         help='name of the task')
 command_add.add_argument('--tasklist-id', type=str,
                          default=conf['Tasklists']['default_id'],
                          dest='tasklist_id',
                          help='id of the tasklist you add task to')
-command_add.add_argument('-t', '--title', required=True, type=str,
-                         help='name of the task')
 command_add.add_argument('-p', '--priority', type=transforms.mkpriority,
                          default=TaskPriority.Medium,
                          choices=list(TaskPriority),
