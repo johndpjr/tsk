@@ -68,11 +68,9 @@ command_update.set_defaults(func=commands.update)
 
 # List: list tasklist(s) data
 command_list = subparser.add_parser('list', aliases=['ls'])
-tasklist_group = command_list.add_mutually_exclusive_group()
-tasklist_group.add_argument('-a', '--all', action='store_true')
-tasklist_group.add_argument('--id', type=str,
-                            nargs='+',
-                            help='id(s) of the tasklist(s)')
+command_list.add_argument('tasklist_id', type=str,
+                          nargs='?',
+                          help='id of the tasklist')
 command_list.set_defaults(func=commands.list)
 
 
