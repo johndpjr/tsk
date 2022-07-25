@@ -63,6 +63,22 @@ command_remove.set_defaults(func=commands.remove)
 
 # update: update task/tasklist data
 command_update = subparser.add_parser('update', aliases=['up'])
+command_update.add_argument('selector', type=Selector,
+                            choices=[s for s in Selector])
+command_update.add_argument('id', type=str,
+                            help='id of the task/tasklist to update')
+command_update.add_argument('-t', '--title', type=str,
+                            help='name of the task/tasklist')
+command_update.add_argument('-p', '--priority', type=transforms.mkpriority,
+                            choices=list(TaskPriority),
+                            dest='task_priority',
+                            help='priority of the task')
+command_update.add_argument('-d', '--duedate', type=transforms.mkdate,
+                            dest='task_date_due',
+                            help='date the task should be completed by')
+command_update.add_argument('-n', '--notes', type=str,
+                            dest='task_notes',
+                            help='additional task information')
 command_update.set_defaults(func=commands.update)
 
 # list: list tasklist(s) data

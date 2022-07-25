@@ -44,7 +44,8 @@ def remove(args: Namespace, db: TskDatabase):
 
 def update(args: Namespace, db: TskDatabase):
     """Update task(s) or tasklist(s)."""
-    pass
+
+    print(args)
 
 def list(args: Namespace, db: TskDatabase):
     """List tasks(s) or tasklist(s)."""
