@@ -4,7 +4,6 @@ from database.tsk_database import TskDatabase
 from enums import Selector
 from models.task import Task
 from models.tasklist import Tasklist
-from settings import Settings
 import logger
 
 
@@ -66,3 +65,11 @@ def list(args: Namespace, db: TskDatabase):
             tasks = db.get_tasks(tasklist.id)
             for task in tasks:
                 logger.print_task(task)
+
+def wipe(args: Namespace, db: TskDatabase):
+    """Remove all tasklists and tasks."""
+
+    resp = input('Remove all tasklists and tasks? [Y/n] ')
+    if not resp or resp.lower() == 'y':
+        db.wipe()
+        print('Removed all tasklists and tasks')

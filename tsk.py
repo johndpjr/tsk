@@ -61,16 +61,20 @@ command_remove.add_argument('ids', type=str,
                             help='id(s) of the task(s)/tasklist(s)')
 command_remove.set_defaults(func=commands.remove)
 
-# Update: update task/tasklist data
+# update: update task/tasklist data
 command_update = subparser.add_parser('update', aliases=['up'])
 command_update.set_defaults(func=commands.update)
 
-# List: list tasklist(s) data
+# list: list tasklist(s) data
 command_list = subparser.add_parser('list', aliases=['ls'])
 command_list.add_argument('tasklist_id', type=str,
                           nargs='?',
                           help='id of the tasklist')
 command_list.set_defaults(func=commands.list)
+
+# wipe: remove all tasklists and tasks
+command_wipe = subparser.add_parser('wipe')
+command_wipe.set_defaults(func=commands.wipe)
 
 
 # Parse args

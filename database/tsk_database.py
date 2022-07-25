@@ -225,3 +225,11 @@ class TskDatabase:
             self.c.executemany("""
                 DELETE FROM Tasks WHERE id=?
             """, ids)
+
+    def wipe(self):
+        """Removes all tasklists and tasks."""
+        with self.conn:
+            self.c.executescript("""
+                DROP TABLE Tasklists;
+                DROP TABLE Tasks
+            """)
