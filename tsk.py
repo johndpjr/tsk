@@ -1,33 +1,32 @@
 import argparse
 from datetime import datetime
-from email.quoprimime import header_check
 
-from enums import Selector, TaskPriority
 import commands
-import utils
 import transforms
+import utils
 from database.tsk_database import TskDatabase
-
+from enums import Selector, TaskPriority
 from settings import Settings
 
 conf = Settings()
 
 parser = argparse.ArgumentParser(
     prog='tsk',
-    description='add, remove, and complete tasks seamlessly')
+    description='add, remove, and complete tasks seamlessly'
+)
 
 subparser = parser.add_subparsers(dest='command')
 
-# Add: adds a task 
+# add: adds a task
 command_add = subparser.add_parser('add', aliases=['a'])
 command_add.add_argument('selector', type=Selector,
                          choices=[s for s in Selector])
 command_add.add_argument('title', type=str,
                          help='name of the task')
-command_add.add_argument('--tasklist-id', type=str,
+command_add.add_argument('-l', type=str,
                          default=conf['Tasklists']['default_id'],
                          dest='tasklist_id',
-                         help='id of the tasklist you add task to')
+                         help='id of the tasklist to add the task to')
 command_add.add_argument('-p', '--priority', type=transforms.mkpriority,
                          default=TaskPriority.Medium,
                          choices=list(TaskPriority),
@@ -43,17 +42,17 @@ command_add.add_argument('-n', '--notes', type=str,
                          help='additional task information')
 command_add.set_defaults(func=commands.add)
 
-# Complete: marks a task as done
+# complete: marks a task as completed
 command_complete = subparser.add_parser('complete', aliases=['cm'])
 command_complete.add_argument('ids', type=str,
                               nargs='+',
-                              help='id(s) of the task(s)')
+                              help='id(s) of the task(s) to complete')
 command_complete.add_argument('-u', '--uncomplete', action='store_false',
                               dest='is_set_complete',
                               help='undo completion status')
 command_complete.set_defaults(func=commands.complete)
 
-# Remove: deletes task(s)/tasklist(s)
+# remove: deletes task(s)/tasklist(s)
 command_remove = subparser.add_parser('remove', aliases=['rm'])
 command_remove.add_argument('selector', type=Selector,
                             choices=[s for s in Selector])
@@ -78,4 +77,4 @@ command_list.set_defaults(func=commands.list)
 args = parser.parse_args()
 
 tsk_db = TskDatabase()
-args.func(args, conf, tsk_db)
+args.func(args, tsk_db)

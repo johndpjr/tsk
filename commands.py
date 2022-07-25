@@ -8,7 +8,7 @@ from settings import Settings
 import logger
 
 
-def add(args: Namespace, conf: Settings, db: TskDatabase):
+def add(args: Namespace, db: TskDatabase):
     """Add task(s) or tasklist(s)."""
 
     if args.selector == Selector.Task:
@@ -29,13 +29,13 @@ def add(args: Namespace, conf: Settings, db: TskDatabase):
         print(f"Added tasklist '{tasklist.title}'")
         logger.print_tasklist(tasklist)
 
-def complete(args: Namespace, conf: Settings, db: TskDatabase):
+def complete(args: Namespace, db: TskDatabase):
     """Complete task(s)."""
 
     db.set_tasks_completion(args.ids, args.is_set_complete)
     logger.feedback_complete(db.get_tasks_by_ids(args.ids), args.is_set_complete)
 
-def remove(args: Namespace, conf: Settings, db: TskDatabase):
+def remove(args: Namespace, db: TskDatabase):
     """Remove task(s) or tasklist(s)."""
 
     if args.selector == Selector.Task:
@@ -43,11 +43,11 @@ def remove(args: Namespace, conf: Settings, db: TskDatabase):
     elif args.selector == Selector.Tasklist:
         db.remove_tasklists(args.ids)
 
-def update(args: Namespace, conf: Settings, db: TskDatabase):
+def update(args: Namespace, db: TskDatabase):
     """Update task(s) or tasklist(s)."""
     pass
 
-def list(args: Namespace, conf: Settings, db: TskDatabase):
+def list(args: Namespace, db: TskDatabase):
     """List tasks(s) or tasklist(s)."""
     
     if args.tasklist_id:
