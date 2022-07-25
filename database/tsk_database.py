@@ -148,7 +148,7 @@ class TskDatabase:
                 """, (query_id,))
                 qres = self.c.fetchone()
                 if qres is None:
-                    print('No tasks found')
+                    print(f'Tasklist {query_id} not found')
                 else:
                     tasklists.append(self._transform_tasklist(qres))
         else:
