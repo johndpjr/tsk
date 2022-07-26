@@ -1,3 +1,4 @@
+from datetime import datetime
 import sqlite3
 from typing import List
 
@@ -232,7 +233,6 @@ class TskDatabase:
     def update_tasklist(self, id: str, title: str=None):
         """Updates a tasklist."""
 
-        # TODO: set is_default (or in config)
         with self.conn:
             self.c.execute("""
                 UPDATE Tasklists
@@ -246,11 +246,14 @@ class TskDatabase:
             )
 
     def update_task(self, id: str, title: str=None,
-                    priority: TaskPriority=None, notes: str=None):
+                    priority: TaskPriority=None, date_due: datetime=None,
+                    notes: str=None):
         """Updates a task."""
         
-        # TODO: set date_due
-        priority_val = priority.value if priority is not None else priority
+        priority_val = priority.value if priority \
+            is not None else priority
+        date_due_val = utils.tstamp_to_tstr(date_due) if date_due \
+            is not None else date_due
         with self.conn:
             self.c.execute("""
                 UPDATE Tasks
@@ -258,12 +261,15 @@ class TskDatabase:
                         THEN :title ELSE title END,
                     priority=CASE WHEN :priority IS NOT NULL
                         THEN :priority ELSE priority END,
+                    date_due=CASE WHEN :date_due IS NOT NULL
+                        THEN :date_due ELSE date_due END,
                     notes=CASE WHEN :notes IS NOT NULL
                         THEN :notes ELSE notes END
                 WHERE id=:id""",
                 {
                     'title': title, 'priority': priority_val,
-                    'notes': notes, 'id': id
+                    'date_due': date_due_val, 'notes': notes,
+                    'id': id
                 }
             )
 

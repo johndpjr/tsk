@@ -51,6 +51,7 @@ def update(args: Namespace, db: TskDatabase):
             args.id,
             title=args.title,
             priority=args.task_priority,
+            date_due=args.task_date_due,
             notes=args.task_notes
         )
     elif args.selector == Selector.Tasklist:
