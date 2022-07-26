@@ -28,14 +28,12 @@ class TskDatabase:
         - Columns:
             * id         (str) : tasklist id
             * title      (str) : name of the tasklist
-            * is_default (bool): indicates if default tasklist
         """
 
         self.c.execute("""CREATE TABLE IF NOT EXISTS Tasklists
             (
                 id TEXT,
-                title TEXT,
-                is_default INTEGER
+                title TEXT
             )
         """)
     
@@ -50,7 +48,6 @@ class TskDatabase:
         if not num_rows:
             default_tasklist = Tasklist(
                 title='Tasks',
-                is_default=True,
                 id='default_id'
             )
             self.add_tasklist(default_tasklist)
@@ -85,7 +82,6 @@ class TskDatabase:
     def _transform_tasklist(self, tasklist_data) -> Tasklist:
         tasklist = Tasklist(
             title=tasklist_data[1],
-            is_default=tasklist_data[2],
             id=tasklist_data[0]
         )
         return tasklist
@@ -103,16 +99,23 @@ class TskDatabase:
         )
         return task
     
+    def is_tasklist(self, id: str) -> bool:
+        """Returns True if id matches a row in Tasklists
+        and False otherwise.
+        """
+        self.c.execute("SELECT COUNT(*) FROM Tasklists WHERE id=?", (id,))
+        return self.c.fetchone()[0]
+ 
     def add_tasklist(self, tasklist: Tasklist):
         """Adds a tasklist to the database."""
         with self.conn:
             self.c.execute("""INSERT INTO Tasklists
                 (
-                    id, title, is_default
+                    id, title
                 )
-                VALUES (?,?,?)""",
+                VALUES (?,?)""",
                 (
-                    tasklist.id, tasklist.title, tasklist.is_default
+                    tasklist.id, tasklist.title
                 )
             )
     
@@ -233,8 +236,14 @@ class TskDatabase:
         with self.conn:
             self.c.execute("""
                 UPDATE Tasklists
-                SET title=CASE WHEN :title IS NOT NULL THEN :title ELSE title END
-                WHERE id=:id""", {'title': title, 'id': id})
+                SET title=CASE WHEN :title IS NOT NULL
+                    THEN :title ELSE title END
+                WHERE id=:id""",
+                {
+                    'title': title,
+                    'id': id
+                }
+            )
 
     def update_task(self, id: str, title: str=None,
                     priority: TaskPriority=None, notes: str=None):
@@ -245,10 +254,18 @@ class TskDatabase:
         with self.conn:
             self.c.execute("""
                 UPDATE Tasks
-                SET title=CASE WHEN :title IS NOT NULL THEN :title ELSE title END,
-                    priority=CASE WHEN :priority IS NOT NULL THEN :priority ELSE priority END,
-                    notes=CASE WHEN :notes IS NOT NULL THEN :notes ELSE notes END
-                WHERE id=:id""", {'title': title, 'priority': priority_val, 'notes': notes, 'id': id})
+                SET title=CASE WHEN :title IS NOT NULL
+                        THEN :title ELSE title END,
+                    priority=CASE WHEN :priority IS NOT NULL
+                        THEN :priority ELSE priority END,
+                    notes=CASE WHEN :notes IS NOT NULL
+                        THEN :notes ELSE notes END
+                WHERE id=:id""",
+                {
+                    'title': title, 'priority': priority_val,
+                    'notes': notes, 'id': id
+                }
+            )
 
     def wipe(self):
         """Removes all tasklists and tasks."""

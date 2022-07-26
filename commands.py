@@ -5,7 +5,10 @@ from enums import Selector
 from models.task import Task
 from models.tasklist import Tasklist
 import logger
+from settings import Settings
 
+
+conf = Settings()
 
 def add(args: Namespace, db: TskDatabase):
     """Add task(s) or tasklist(s)."""
@@ -55,6 +58,9 @@ def update(args: Namespace, db: TskDatabase):
             args.id,
             title=args.title
         )
+        if args.tasklist_default and db.is_tasklist(args.id):
+            conf['Tasklists']['default_id'] = args.id
+            conf.commit()
 
 def list(args: Namespace, db: TskDatabase):
     """List tasks(s) or tasklist(s)."""

@@ -7,3 +7,8 @@ class Settings(ConfigParser):
     def __init__(self):
         super().__init__()
         self.read('config.ini')
+
+    def commit(self):
+        """Commit settings changes."""
+        with open('config.ini', 'w') as configfile:
+            self.write(configfile)
