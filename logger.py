@@ -1,11 +1,19 @@
-from typing import List
+from typing import List, Union
 from models.task import Task
 from models.tasklist import Tasklist
-from enums import TaskPriority
+from enums import Selector, TaskPriority
 from utils import tstamp_to_friendly_datestr
 
 
+def print_tasklist(tasklist: Tasklist):
+    """Outputs the tasklist in a pretty format."""
+
+    oput_is_default = '(default)' if tasklist.is_default else ''
+    print(f'{tasklist.title} ({tasklist.id}) {oput_is_default}')
+
 def print_task(task: Task):
+    """Outputs the task in a pretty format"""
+
     oput_is_completed = '*' if task.is_completed else ' '
     if task.priority == TaskPriority.High: oput_priority = '!'
     elif task.priority == TaskPriority.Medium: oput_priority = '^'
@@ -20,12 +28,18 @@ def print_task(task: Task):
                 f'      {tstamp_to_friendly_datestr(task.date_due)}'
     print(task_oput)
 
-def print_tasklist(tasklist: Tasklist):
-    oput_is_default = '(default)' if tasklist.is_default else ''
-    print(f'{tasklist.title} ({tasklist.id}) {oput_is_default}')
+def feedback_add(selector: Selector, item: Union[Tasklist, Task]):
+    """Provides feedback for the "add" command"""
+
+    print(f'Added {selector.name} "{item.title}"')
+    if isinstance(item, Tasklist):
+        print_tasklist(item)
+    else:  # item is Task
+        print_task(item)
 
 def feedback_complete(tasks: List[Task], completed: bool):
-    """Provides feedback for the 'complete' command."""
+    """Provides feedback for the "complete" command."""
+
     oput_complete_msg = 'Completed' if completed else 'Uncompleted'
     task_titles = [task.title for task in tasks]
     print(f'{oput_complete_msg} tasks ', end='')

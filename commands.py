@@ -19,14 +19,12 @@ def add(args: Namespace, db: TskDatabase):
             notes=args.task_notes
         )
         db.add_task(task)
-        print(f"Added task '{task.title}'")
-        logger.print_task(task)
+        logger.feedback_add(args.selector, task)
     
     elif args.selector == Selector.Tasklist:
         tasklist = Tasklist(args.title)
         db.add_tasklist(tasklist)
-        print(f"Added tasklist '{tasklist.title}'")
-        logger.print_tasklist(tasklist)
+        logger.feedback_add(args.selector, tasklist)
 
 def complete(args: Namespace, db: TskDatabase):
     """Complete task(s)."""
