@@ -45,7 +45,18 @@ def remove(args: Namespace, db: TskDatabase):
 def update(args: Namespace, db: TskDatabase):
     """Update task(s) or tasklist(s)."""
 
-    print(args)
+    if args.selector == Selector.Task:
+        db.update_task(
+            args.id,
+            title=args.title,
+            priority=args.task_priority,
+            notes=args.task_notes
+        )
+    elif args.selector == Selector.Tasklist:
+        db.update_tasklist(
+            args.id,
+            title=args.title
+        )
 
 def list(args: Namespace, db: TskDatabase):
     """List tasks(s) or tasklist(s)."""

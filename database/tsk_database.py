@@ -226,6 +226,30 @@ class TskDatabase:
                 DELETE FROM Tasks WHERE id=?
             """, ids)
 
+    def update_tasklist(self, id: str, title: str=None):
+        """Updates a tasklist."""
+
+        # TODO: set is_default (or in config)
+        with self.conn:
+            self.c.execute("""
+                UPDATE Tasklists
+                SET title=CASE WHEN :title IS NOT NULL THEN :title ELSE title END
+                WHERE id=:id""", {'title': title, 'id': id})
+
+    def update_task(self, id: str, title: str=None,
+                    priority: TaskPriority=None, notes: str=None):
+        """Updates a task."""
+        
+        # TODO: set date_due
+        priority_val = priority.value if priority is not None else priority
+        with self.conn:
+            self.c.execute("""
+                UPDATE Tasks
+                SET title=CASE WHEN :title IS NOT NULL THEN :title ELSE title END,
+                    priority=CASE WHEN :priority IS NOT NULL THEN :priority ELSE priority END,
+                    notes=CASE WHEN :notes IS NOT NULL THEN :notes ELSE notes END
+                WHERE id=:id""", {'title': title, 'priority': priority_val, 'notes': notes, 'id': id})
+
     def wipe(self):
         """Removes all tasklists and tasks."""
         with self.conn:
