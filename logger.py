@@ -32,13 +32,16 @@ def print_task(task: Task):
                 f'      {tstamp_to_friendly_datestr(task.date_due)}'
     print(task_oput)
 
-def feedback_add(selector: Selector, item: Union[Tasklist, Task]):
+def feedback_add(selector: Selector, item: Union[Tasklist, Task],
+                 tasklist_title=None):
     """Provides feedback for the "add" command"""
 
-    print(f'Added {selector.name} "{item.title}"')
+    print(f'Added {selector.value} "{item.title}"', end='')
     if isinstance(item, Tasklist):
+        print()
         print_tasklist(item)
     else:  # item is Task
+        print(f' to tasklist "{tasklist_title}"')
         print_task(item)
 
 def feedback_complete(tasks: List[Task], completed: bool):
@@ -49,4 +52,4 @@ def feedback_complete(tasks: List[Task], completed: bool):
     print(f'{oput_complete_msg} tasks ', end='')
     for count, title in enumerate(task_titles, 1):
         end_mark = ', ' if count != len(task_titles) else '\n'
-        print(f"'{title}'{end_mark}", end='')
+        print(f'"{title}"{end_mark}', end='')

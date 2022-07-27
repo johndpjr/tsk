@@ -22,7 +22,11 @@ def add(args: Namespace, db: TskDatabase):
             notes=args.task_notes
         )
         db.add_task(task)
-        logger.feedback_add(args.selector, task)
+        logger.feedback_add(
+            args.selector,
+            task,
+            tasklist_title=db.get_tasklists([task.tasklist_id])[0].title
+        )
     
     elif args.selector == Selector.Tasklist:
         tasklist = Tasklist(args.title)
