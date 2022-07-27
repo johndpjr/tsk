@@ -7,7 +7,6 @@ import utils
 
 from models.task import Task
 from models.tasklist import Tasklist
-from enums import TaskPriority
 
 
 class TskDatabase:
@@ -92,7 +91,7 @@ class TskDatabase:
             tasklist_id=task_data[1],
             title=task_data[2],
             is_completed=task_data[3],
-            priority=TaskPriority(task_data[4]),
+            priority=task_data[4],
             date_created=utils.tstr_to_tstamp(task_data[5]),
             date_due=utils.tstr_to_tstamp(task_data[6]),
             notes=task_data[7],
@@ -134,7 +133,7 @@ class TskDatabase:
                 (
                     task.id, task.tasklist_id,
                     task.title, task.is_completed,
-                    task.priority.value,
+                    task.priority,
                     utils.tstamp_to_tstr(task.date_created),
                     utils.tstamp_to_tstr(task.date_due),
                     task.notes
@@ -246,12 +245,10 @@ class TskDatabase:
             )
 
     def update_task(self, id: str, title: str=None,
-                    priority: TaskPriority=None, date_due: datetime=None,
+                    priority: int=None, date_due: datetime=None,
                     notes: str=None):
         """Updates a task."""
         
-        priority_val = priority.value if priority \
-            is not None else priority
         date_due_val = utils.tstamp_to_tstr(date_due) if date_due \
             is not None else date_due
         with self.conn:
@@ -267,7 +264,7 @@ class TskDatabase:
                         THEN :notes ELSE notes END
                 WHERE id=:id""",
                 {
-                    'title': title, 'priority': priority_val,
+                    'title': title, 'priority': priority,
                     'date_due': date_due_val, 'notes': notes,
                     'id': id
                 }

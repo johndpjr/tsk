@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 from datetime import datetime
 
-from enums import Selector, TaskPriority
+from enums import Selector
 import transforms
 import utils
 from settings import Settings
@@ -44,9 +44,9 @@ def _construct_add_parser(p: ArgumentParser):
                    default=conf['Tasklists']['default_id'],
                    dest='tasklist_id',
                    help='id of the tasklist to add the task to')
-    p.add_argument('-p', '--priority', type=transforms.mkpriority,
-                   default=TaskPriority.Medium,
-                   choices=list(TaskPriority),
+    p.add_argument('-p', '--priority', type=int,
+                   default=2,
+                   choices=range(1, 4),
                    dest='task_priority',
                    help='priority of the task')
     p.add_argument('-d', '--duedate', type=transforms.mkdate,
@@ -83,8 +83,8 @@ def _construct_update_parser(p: ArgumentParser):
     p.add_argument('--make-default', action='store_true',
                    dest='tasklist_default',
                    help='make this tasklist the default tasklist')
-    p.add_argument('-p', '--priority', type=transforms.mkpriority,
-                   choices=list(TaskPriority),
+    p.add_argument('-p', '--priority', type=int,
+                   choices=range(1, 4),
                    dest='task_priority',
                    help='priority of the task')
     p.add_argument('-d', '--duedate', type=transforms.mkdate,

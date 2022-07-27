@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from enums import TaskPriority
 import utils
 
 
@@ -12,7 +11,7 @@ class Task:
     tasklist_id: str
     title: str
     is_completed: bool     = False
-    priority: TaskPriority = TaskPriority.Medium
+    priority: int          = 2
     date_created: datetime = datetime.now()
     date_due: datetime     = datetime.now().date()
     notes: str             = ''

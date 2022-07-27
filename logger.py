@@ -1,7 +1,7 @@
 from typing import List, Union
 from models.task import Task
 from models.tasklist import Tasklist
-from enums import Selector, TaskPriority
+from enums import Selector
 from utils import tstamp_to_friendly_datestr
 from settings import Settings
 
@@ -19,9 +19,9 @@ def print_task(task: Task):
     """Outputs the task in a pretty format"""
 
     oput_is_completed = '*' if task.is_completed else ' '
-    if task.priority == TaskPriority.High: oput_priority = '!'
-    elif task.priority == TaskPriority.Medium: oput_priority = '^'
-    elif task.priority == TaskPriority.Low: oput_priority = '.'
+    if task.priority == 3: oput_priority = '!'
+    elif task.priority == 2: oput_priority = '^'
+    elif task.priority == 1: oput_priority = '.'
     oput_notes = '{...}' if task.notes else ''
     
     task_oput = f'[{oput_is_completed}] ' \
