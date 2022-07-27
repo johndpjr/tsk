@@ -5,10 +5,10 @@ class Settings(ConfigParser):
     """Models the settings for tsk."""
 
     def __init__(self):
-        super().__init__()
+        super().__init__(allow_no_value=True)
         self.read('../config.ini')
 
     def commit(self):
         """Commit settings changes."""
-        with open('config.ini', 'w') as configfile:
+        with open('../config.ini', 'w') as configfile:
             self.write(configfile)

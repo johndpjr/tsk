@@ -48,10 +48,11 @@ class TskDatabase:
         if not num_rows:
             default_tasklist = Tasklist(
                 title='Tasks',
-                id='default_id'
+                id=self.conf['Database']['DEFAULT_TASKLIST_ID']
             )
             self.add_tasklist(default_tasklist)
-            self.conf['Tasklists']['default_id'] = default_tasklist.id
+            self.conf['TaskDefaults']['tasklist_id'] = default_tasklist.id
+            self.conf.commit()
     
     def _create_tasks_table(self):
         """Add a Tasks table to the Database if it doesn't exist.
@@ -150,10 +151,7 @@ class TskDatabase:
                     SELECT * FROM Tasklists WHERE id=?
                 """, (query_id,))
                 qres = self.c.fetchone()
-                if qres is None:
-                    print(f'Tasklist {query_id} not found')
-                else:
-                    tasklists.append(self._transform_tasklist(qres))
+                tasklists.append(self._transform_tasklist(qres))
         else:
             self.c.execute("""
                 SELECT * FROM Tasklists

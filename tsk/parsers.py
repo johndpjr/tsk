@@ -41,7 +41,7 @@ def _construct_add_parser(p: ArgumentParser):
     p.add_argument('title', type=str,
                    help='name of the task')
     p.add_argument('-l', type=str,
-                   default=conf['Tasklists']['default_id'],
+                   default=conf['TaskDefaults']['tasklist_id'],
                    dest='tasklist_id',
                    help='id of the tasklist to add the task to')
     p.add_argument('-p', '--priority', type=int,
@@ -81,7 +81,7 @@ def _construct_update_parser(p: ArgumentParser):
     p.add_argument('-t', '--title', type=str,
                    help='name of the task/tasklist')
     p.add_argument('--make-default', action='store_true',
-                   dest='tasklist_default',
+                   dest='tasklist_make_default',
                    help='make this tasklist the default tasklist')
     p.add_argument('-p', '--priority', type=int,
                    choices=range(1, 4),

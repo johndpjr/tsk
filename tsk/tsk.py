@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser(
     description='add, remove, and complete tasks seamlessly'
 )
 
+tsk_db = TskDatabase()
 subparser = parser.add_subparsers(dest='command')
 
 # add: adds a task
@@ -35,5 +36,4 @@ parsers.construct(subparser, 'wipe')
 # parse args
 args = parser.parse_args()
 
-tsk_db = TskDatabase()
 args.func(args, tsk_db)

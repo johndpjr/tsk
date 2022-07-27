@@ -1,4 +1,4 @@
-from argparse import Namespace
+from argparse import Namespace, ArgumentError
 from database.tsk_database import TskDatabase
 
 from enums import Selector
@@ -14,6 +14,10 @@ def add(args: Namespace, db: TskDatabase):
     """Add task(s) or tasklist(s)."""
 
     if args.selector == Selector.Task:
+        if not db.is_tasklist(args.tasklist_id):
+            raise ArgumentError(None,
+                                f'Tasklist id "{args.tasklist_id}" not found')
+        
         task = Task(
             args.tasklist_id,
             args.title,
@@ -63,14 +67,17 @@ def update(args: Namespace, db: TskDatabase):
             args.id,
             title=args.title
         )
-        if args.tasklist_default and db.is_tasklist(args.id):
-            conf['Tasklists']['default_id'] = args.id
+        if args.tasklist_make_default and db.is_tasklist(args.id):
+            conf['TaskDefaults']['tasklist_id'] = args.id
             conf.commit()
 
 def list(args: Namespace, db: TskDatabase):
     """List tasks(s) or tasklist(s)."""
     
     if args.tasklist_id:
+        if not db.is_tasklist(args.tasklist_id):
+            raise ArgumentError(None, f'Tasklist id "{args.tasklist_id}" not found')
+
         tasklist = db.get_tasklists([args.tasklist_id])
         if tasklist:
             tasklist = tasklist[0]

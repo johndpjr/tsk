@@ -12,7 +12,7 @@ def print_tasklist(tasklist: Tasklist):
     """Outputs the tasklist in a pretty format."""
 
     oput_is_default = '(default)' \
-        if tasklist.id == conf['Tasklists']['default_id'] else ''
+        if tasklist.id == conf['TaskDefaults']['tasklist_id'] else ''
     print(f'{tasklist.title} ({tasklist.id}) {oput_is_default}')
 
 def print_task(task: Task):
