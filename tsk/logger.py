@@ -18,6 +18,9 @@ def print_tasklist(tasklist: Tasklist):
 def print_task(task: Task):
     """Outputs the task in a pretty format"""
 
+    if not conf.getboolean('View', 'show_completed') and task.is_completed:
+        return
+
     oput_is_completed = '*' if task.is_completed else ' '
     if task.priority == 3: oput_priority = '!'
     elif task.priority == 2: oput_priority = '^'
