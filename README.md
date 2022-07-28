@@ -7,12 +7,12 @@ TODO
 
 ## Usage
 tsk has 6 commands available:
-    - `add`
-    - `complete`
-    - `remove`
-    - `update`
-    - `list`
-    - `wipe`
+* `add`
+* `complete`
+* `remove`
+* `update`
+* `list`
+* `wipe`
 
 ### add
 The `add` command adds a task or tasklist.
@@ -37,7 +37,7 @@ optional arguments:
 ```
 
 ### complete
-The `complete` command marks a task as complete.
+The `complete` command marks task(s) as complete.
 ```
 usage: tsk complete [-h] [-u] ids [ids ...]
 
@@ -63,7 +63,7 @@ optional arguments:
 ```
 
 ### update
-The `update` command updates a task or tasklist
+The `update` command updates a task or tasklist.
 ```
 usage: tsk update [-h] [-t TITLE] [--make-default] [-p {1,2,3}]
                   [-d TASK_DATE_DUE] [-n TASK_NOTES]
@@ -87,7 +87,7 @@ optional arguments:
 ```
 
 ### list
-The `list` command lists the tasks of the given tasklist.
+The `list` command displays the tasks of the given tasklist.
 ```
 usage: tsk list [-h] [tasklist_id]
 
@@ -99,7 +99,7 @@ optional arguments:
 ```
 
 ### wipe
-The `wipe` command *permanently* clears **all** tasks and tasklists. It will ask the user for confirmation.
+The `wipe` command **permanently clears** *all* tasks and tasklists. It will ask the user for confirmation.
 ```
 usage: tsk wipe [-h]
 
