@@ -122,3 +122,14 @@ def config(args: Namespace, db: TskDatabase):
             
     conf[args.section][args.key] = args.value
     conf.commit()
+
+
+cmd_map = {
+    'add': add,
+    'complete': complete,
+    'remove': remove,
+    'update': update,
+    'list': list,
+    'wipe': wipe,
+    'config': config,
+}

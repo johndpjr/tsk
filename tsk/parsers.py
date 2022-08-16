@@ -12,29 +12,24 @@ def construct(subparser, name: str, **kwargs):
     # create base parser with name and aliases
     base_parser = subparser.add_parser(name, **kwargs)
 
-    # add arguments to the base parser
-    # link the command to a function
+    # add arguments to the parser
     if name == 'add':
         _construct_add_parser(base_parser)
-        base_parser.set_defaults(func=commands.add)
     elif name == 'complete':
         _construct_complete_parser(base_parser)
-        base_parser.set_defaults(func=commands.complete)
     elif name == 'remove':
         _construct_remove_parser(base_parser)
-        base_parser.set_defaults(func=commands.remove)
     elif name == 'update':
         _construct_update_parser(base_parser)
-        base_parser.set_defaults(func=commands.update)
     elif name == 'list':
         _construct_list_parser(base_parser)
-        base_parser.set_defaults(func=commands.list)
     elif name == 'wipe':
         _construct_wipe_parser(base_parser)
-        base_parser.set_defaults(func=commands.wipe)
     elif name == 'config':
         _construct_config_parser(base_parser)
-        base_parser.set_defaults(func=commands.config)
+
+    # link the command name to a function to execute
+    base_parser.set_defaults(func=commands.cmd_map[name])
 
 def _construct_add_parser(p: ArgumentParser):
     p.add_argument('selector', type=Selector,
