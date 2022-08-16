@@ -14,7 +14,7 @@ class TskDatabase:
 
     def __init__(self):
         self.conf = Settings()
-        self.conn = sqlite3.connect(self.conf['Database']['filename'])
+        self.conn = sqlite3.connect(f'database/{self.conf["Database"]["filename"]}')
         self.c = self.conn.cursor()
 
         # Initial table creation sequence
