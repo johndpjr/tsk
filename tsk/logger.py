@@ -25,14 +25,17 @@ def print_task(task: Task):
     if task.priority == 3: oput_priority = '!'
     elif task.priority == 2: oput_priority = '^'
     elif task.priority == 1: oput_priority = '.'
+    elif task.priority == 0: oput_priority = ' '
+    oput_date_due = f'\n      {tstamp_to_friendly_datestr(task.date_due)}' \
+        if task.date_due is not None else ''
     oput_notes = '{...}' if task.notes else ''
     
     task_oput = f'[{oput_is_completed}] ' \
                 f'{task.title:-<35} ' \
                 f'{oput_priority} ' \
                 f'({task.id}) ' \
-                f'{oput_notes}\n' \
-                f'      {tstamp_to_friendly_datestr(task.date_due)}'
+                f'{oput_notes}' \
+                f'{oput_date_due}'
     print(task_oput)
 
 def feedback_add(selector: Selector, item: Union[Tasklist, Task],

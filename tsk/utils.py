@@ -19,7 +19,11 @@ def tstamp_to_timestr(tstamp: datetime) -> str:
     return tstamp.strftime('%H:%M:%S')
 
 def tstamp_to_tstr(tstamp: datetime) -> str:
-    return f'{tstamp_to_datestr(tstamp)} {tstamp_to_timestr(tstamp)}'
+    if tstamp is not None:
+        return f'{tstamp_to_datestr(tstamp)} {tstamp_to_timestr(tstamp)}'
+    return None
 
 def tstr_to_tstamp(tstr: str) -> datetime:
-    return datetime.strptime(tstr, '%Y-%m-%d %H:%M:%S')
+    if tstr is not None:
+        return datetime.strptime(tstr, '%Y-%m-%d %H:%M:%S')
+    return None

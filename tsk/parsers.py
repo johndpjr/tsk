@@ -1,9 +1,7 @@
 from argparse import ArgumentParser
-from datetime import datetime
 
 from enums import Selector
 import transforms
-import utils
 from settings import Settings
 import commands
 
@@ -34,6 +32,9 @@ def construct(subparser, name: str, **kwargs):
     elif name == 'wipe':
         _construct_wipe_parser(base_parser)
         base_parser.set_defaults(func=commands.wipe)
+    elif name == 'config':
+        _construct_config_parser(base_parser)
+        base_parser.set_defaults(func=commands.config)
 
 def _construct_add_parser(p: ArgumentParser):
     p.add_argument('selector', type=Selector,
@@ -45,13 +46,13 @@ def _construct_add_parser(p: ArgumentParser):
                    dest='tasklist_id',
                    help='id of the tasklist to add the task to')
     p.add_argument('-p', '--priority', type=int,
-                   default=2,
-                   choices=range(1, 4),
+                   default=conf['TaskDefaults']['priority'],
+                   choices=range(0, 4),
                    dest='task_priority',
                    help='priority of the task')
     p.add_argument('-d', '--duedate', type=transforms.mkdate,
                    dest='task_date_due',
-                   default=utils.tstamp_to_american_datestr(datetime.now().date()),
+                   default=conf.get_default_val('date_due'),
                    help='date the task should be completed by')
     p.add_argument('-n', '--notes', type=str,
                    default='',
@@ -101,3 +102,9 @@ def _construct_list_parser(p: ArgumentParser):
 
 def _construct_wipe_parser(p: ArgumentParser):
     pass
+
+def _construct_config_parser(p: ArgumentParser):
+    p.add_argument('section', type=str,
+                   choices=['TaskDefaults', 'View'])
+    p.add_argument('key', type=str)
+    p.add_argument('value', type=str)

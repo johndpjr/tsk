@@ -32,6 +32,9 @@ parsers.construct(subparser, 'list', aliases=['ls'])
 # wipe: remove all tasklists and tasks
 parsers.construct(subparser, 'wipe')
 
+# config: change task defaults and view options
+parsers.construct(subparser, 'config')
+
 
 # parse args
 args = parser.parse_args()
