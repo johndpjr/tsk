@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 import sqlite3
 from typing import List
 
@@ -14,10 +15,11 @@ class TskDatabase:
 
     def __init__(self):
         self.conf = Settings()
-        self.conn = sqlite3.connect(f'tsk/database/{self.conf["Database"]["filename"]}')
+        db_path = os.path.join(os.path.dirname(__file__), self.conf["Database"]["filename"])
+        self.conn = sqlite3.connect(db_path)
         self.c = self.conn.cursor()
 
-        # Initial table creation sequence
+        # initial table creation sequence
         with self.conn:
             self._create_tasklists_table()
             self._add_default_tasklist_ifndef()
@@ -25,7 +27,7 @@ class TskDatabase:
     
     def _create_tasklists_table(self):
         """Add a Tasklists table to the Database if it doesn't exist.
-        - Columns:
+        - Tasklists:
             * id         (str) : tasklist id
             * title      (str) : name of the tasklist
         """
@@ -38,8 +40,8 @@ class TskDatabase:
         """)
     
     def _add_default_tasklist_ifndef(self):
-        """Add the default tasklist to the Tasklists table if
-        there are no rows.
+        """Add the default tasklist to the Tasklists table
+        if there are no tasklists to ensure tasklist availability.
         """
 
         num_rows = self.c.execute("""
@@ -48,7 +50,7 @@ class TskDatabase:
         if not num_rows:
             default_tasklist = Tasklist(
                 title='Tasks',
-                id=self.conf['Database']['DEFAULT_TASKLIST_ID']
+                id=self.conf['Database']['default_tasklist_id']
             )
             self.add_tasklist(default_tasklist)
             self.conf['TaskDefaults']['tasklist_id'] = default_tasklist.id
@@ -56,7 +58,7 @@ class TskDatabase:
     
     def _create_tasks_table(self):
         """Add a Tasks table to the Database if it doesn't exist.
-        - Columns:
+        - Tasks:
             * id           (str): task id
             * tasklist_id  (str): parent tasklist id
             * title        (str): task name
@@ -108,7 +110,7 @@ class TskDatabase:
         return self.c.fetchone()[0]
  
     def add_tasklist(self, tasklist: Tasklist):
-        """Adds a tasklist to the database."""
+        """Adds a tasklist to Tasklists."""
         with self.conn:
             self.c.execute("""INSERT INTO Tasklists
                 (
@@ -121,7 +123,7 @@ class TskDatabase:
             )
     
     def add_task(self, task: Task):
-        """Adds a task to the database."""
+        """Adds a task to Tasks."""
         with self.conn:
             self.c.execute("""INSERT INTO Tasks
                 (
@@ -142,7 +144,8 @@ class TskDatabase:
             )
 
     def get_tasklists(self, query_ids: List[str]=[]) -> List[Tasklist]:
-        """Returns a list of all tasklists."""
+        """Returns a list of all tasklists. Override query_ids
+        to specify specific tasklists needed."""
 
         tasklists = []
         if query_ids:
@@ -210,11 +213,11 @@ class TskDatabase:
         """
         tasklist_ids = [(id,) for id in tasklist_ids]
         with self.conn:
-            # Delete tasklists
+            # delete tasklists
             self.c.executemany("""
                 DELETE FROM Tasklists WHERE id=?
             """, tasklist_ids)
-            # Delete tasks associated with tasklists
+            # delete tasks associated with tasklists
             self.c.executemany("""
                 DELETE FROM Tasks WHERE tasklist_id=?
             """, tasklist_ids)
