@@ -5,17 +5,109 @@ tsk is a task manager CLI written in Python using the `argparse` library and `sq
 ## Installation
 `pip install tsk-official`
 
+## Quickstart
+Use the `add` command to add a task to the default tasklist:
+
+`tsk add task 'some task to do'`
+
+Returns:
+```
+Added task "some task to do" to tasklist "Tasks"
+[ ] some task to do--------------------   (kD8Ds)
+```
+The task id `kD8Ds` is the id to reference the task by later (it will be different for you, of course).
+
+---
+
+Let's use the `complete` command to complete this task (use your task id here instead of kD8Ds):
+
+`tsk complete kD8Ds`
+
+When you list the tasks again with the command `ls`, you will not see the completed task (to show completed tasks type `tsk config View show_completed true`):
+
+`tsk ls`
+
+Returns:
+```
+Tasks (default_id) (default)
+```
+
+---
+
+Adding a new tasklist:
+
+`tsk add tasklist 'some tasklist name'`
+
+Returns:
+```
+Added tasklist "some tasklist name"
+some tasklist name (w9tQq)
+```
+
+Use the tasklist id provided (`w9tQq` in my case) and the `-l` flag to link tasks to this tasklist:
+
+`tsk add task 'part of the other tasklist' -l w9tQq`
+
+Returns:
+```
+Added task "part of the other tasklist" to tasklist "some tasklist name"
+[ ] part of the other tasklist---------   (ypost)
+```
+
+There are now two tasklists and 1 task:
+```
+Tasks (default_id) (default)
+some tasklist name (w9tQq) 
+[ ] part of the other tasklist---------   (ypost)
+```
+
+---
+
+To remove a tasklist (and its associated tasks), use the `remove` command (*note that you must specify that you are removing a task and not a tasklist*):
+
+`tsk remove tasklist w9tQq`
+
+You could have removed just the task 'part of the other tasklist' with the command:
+
+`tsk remove task ypost`
+
+---
+
+Let's add a new task but with more information attached. You can add priority, duedate, and notes information to your tasks with simple flags:
+
+`tsk add task 'complex task' -p 3 -d 08/17/22 -n 'this is a note'`
+
+*The duedate must be correctly formatted with padded zeros (format `MM/DD/YY`).*
+
+Returns:
+```
+Added task "complex task" to tasklist "Tasks"
+[ ] complex task----------------------- ! (H8Tij) {...}
+      Wed Aug 17
+```
+
+This task now has the highest priority (3), a duedate of August 17, 2022, and a note containing 'this is a note'.
+
+---
+
+Additionally, you can update task information with the `update` command:
+
+`tsk update task H8Tij -d 09/09/09 -n 'new note'`
+
+This updates the task's duedate to September 9, 2009 and notes to 'new note'.
+
 ## Usage
-tsk has 6 commands available:
+tsk has 7 commands available:
 * `add`
 * `complete`
 * `remove`
 * `update`
 * `list`
 * `wipe`
+* `config`
 
 ### add
-The `add` command adds a task or tasklist.
+The `add` command adds a task or tasklist (alternatively use the alias `a`).
 ```
 usage: tsk add [-h] [-l TASKLIST_ID] [-p {1,2,3}] [-d TASK_DATE_DUE]
                [-n TASK_NOTES]
@@ -37,7 +129,7 @@ optional arguments:
 ```
 
 ### complete
-The `complete` command marks task(s) as complete.
+The `complete` command marks task(s) as complete (alternatively use the alias `cm`).
 ```
 usage: tsk complete [-h] [-u] ids [ids ...]
 
@@ -50,7 +142,7 @@ optional arguments:
 ```
 
 ### remove
-The `remove` command removes task(s) or tasklist(s).
+The `remove` command removes task(s) or tasklist(s) (alternatively use the alias `rm`).
 ```
 usage: tsk remove [-h] {Selector.Task,Selector.Tasklist} ids [ids ...]
 
@@ -63,7 +155,7 @@ optional arguments:
 ```
 
 ### update
-The `update` command updates a task or tasklist.
+The `update` command updates a task or tasklist (alternatively use the alias `up`).
 ```
 usage: tsk update [-h] [-t TITLE] [--make-default] [-p {1,2,3}]
                   [-d TASK_DATE_DUE] [-n TASK_NOTES]
@@ -87,7 +179,7 @@ optional arguments:
 ```
 
 ### list
-The `list` command displays the tasks of the given tasklist.
+The `list` command displays the tasks of the given tasklist (alternatively use the alias `ls`).
 ```
 usage: tsk list [-h] [tasklist_id]
 
