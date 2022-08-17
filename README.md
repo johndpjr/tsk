@@ -3,7 +3,7 @@
 tsk is a task manager CLI written in Python using the `argparse` library and `sqlite3` for data storage. tsk allows you to add, remove, and complete tasks seamlessly.
 
 ## Installation
-TODO
+`pip install tsk-official`
 
 ## Usage
 tsk has 6 commands available:
