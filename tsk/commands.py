@@ -1,11 +1,11 @@
 from argparse import Namespace, ArgumentError
-from database.tsk_database import TskDatabase
+from tsk.database.tsk_database import TskDatabase
 
-from enums import Selector
-from models.task import Task
-from models.tasklist import Tasklist
-import logger
-from settings import Settings
+from tsk.enums import Selector
+from tsk.models.task import Task
+from tsk.models.tasklist import Tasklist
+from tsk import logger
+from tsk.settings import Settings
 
 
 conf = Settings()

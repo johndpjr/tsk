@@ -1,7 +1,7 @@
 from configparser import ConfigParser
 from datetime import datetime, timedelta
 
-import utils
+from tsk import utils
 
 
 class Settings(ConfigParser):
@@ -9,11 +9,11 @@ class Settings(ConfigParser):
 
     def __init__(self):
         super().__init__(allow_no_value=True)
-        self.read('../config.ini')
+        self.read('tsk/config.ini')
 
     def commit(self):
         """Commit settings changes."""
-        with open('../config.ini', 'w') as configfile:
+        with open('tsk/config.ini', 'w') as configfile:
             self.write(configfile)
 
     def get_default_val(self, key: str):

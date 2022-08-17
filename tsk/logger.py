@@ -1,9 +1,10 @@
 from typing import List, Union
-from models.task import Task
-from models.tasklist import Tasklist
-from enums import Selector
-from utils import tstamp_to_friendly_datestr
-from settings import Settings
+
+from tsk.models.task import Task
+from tsk.models.tasklist import Tasklist
+from tsk.enums import Selector
+from tsk.utils import tstamp_to_friendly_datestr
+from tsk.settings import Settings
 
 
 conf = Settings()

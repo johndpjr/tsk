@@ -1,9 +1,9 @@
 from argparse import ArgumentParser
 
-from enums import Selector
-import transforms
-from settings import Settings
-import commands
+from tsk.enums import Selector
+from tsk import transforms
+from tsk.settings import Settings
+from tsk import commands
 
 
 conf = Settings()

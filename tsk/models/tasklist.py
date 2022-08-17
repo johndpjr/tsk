@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-import utils
+from tsk import utils
 
 
 @dataclass

@@ -2,11 +2,11 @@ from datetime import datetime
 import sqlite3
 from typing import List
 
-from settings import Settings
-import utils
+from tsk.settings import Settings
+from tsk import utils
 
-from models.task import Task
-from models.tasklist import Tasklist
+from tsk.models.task import Task
+from tsk.models.tasklist import Tasklist
 
 
 class TskDatabase:
@@ -14,7 +14,7 @@ class TskDatabase:
 
     def __init__(self):
         self.conf = Settings()
-        self.conn = sqlite3.connect(f'database/{self.conf["Database"]["filename"]}')
+        self.conn = sqlite3.connect(f'tsk/database/{self.conf["Database"]["filename"]}')
         self.c = self.conn.cursor()
 
         # Initial table creation sequence
