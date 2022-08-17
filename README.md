@@ -106,3 +106,24 @@ usage: tsk wipe [-h]
 optional arguments:
   -h, --help  show this help message and exit
 ```
+
+### config
+The `config` command configures task defaults and view options.
+The following options can be configured:
+* `TaskDefaults`
+  * `tasklist_id` is the default id of the tasklist assigned to every task that does not explicitly define a tasklist through the `-l` flag
+  * `priority` is the default task priority that uses the integers 1-3 to indicate importance (*use 0 for no default `priority`*)
+  * `date_due` is the default duedate of the task, measured in days from today [0 for today, 1 for tomorrow, etc.] (*use -1 for no default `date_due`*)
+* `View`
+  * `show_completed` is either `true` or `false`; it determines if completed tasks are shown when listing tasks
+```
+usage: tsk config [-h] {TaskDefaults,View} key value
+
+positional arguments:
+  {TaskDefaults,View}
+  key
+  value
+
+options:
+  -h, --help           show this help message and exit
+```
